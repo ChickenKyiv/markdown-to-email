@@ -1,25 +1,34 @@
 const { readSourceFile } = require("./utils");
+
 const {
-  header,
-  image,
-  link,
-  ulList,
-  olList,
-  blockquote,
-  paragraphWrapper,
-  sponsorship,
-  br,
   strong,
+  link,
+  blockquote,
   mem,
-  italic, 
+  header,
+
+
+  italic,
   del,
   q,
   code,
   hr,
-  empty,
+  empty
+} = require("./callbacks-simple");
+
+const {
+  image,
+  ulList,
+  olList,
+  paragraphWrapper,
+  sponsorship,
+  br,
   newLine
 } = require("./callbacks");
+
 const { replaceMarkdown, replaceMarkdownPreviewText } = require("./helpers");
+
+//const cococonst = require("atherdon-newsletter-constants");
 
 const {
   REGEXP_HEADER,
@@ -48,6 +57,7 @@ const {
 // @todo update this method. I'm sure it can be improved.
 function parse(source) {
   let markdown = readSourceFile(source);
+
   let state = {
     content: markdown,
     previewText: "",
@@ -62,15 +72,20 @@ function parse(source) {
   };
 
   const replaceMDBinded = replaceMarkdown.bind(state);
+
   const replaceMDBindedPreviewText = replaceMarkdownPreviewText.bind(state);
 
-  replaceMDBinded(REGEXP_HTML_COMMENTS, empty);
   replaceMDBindedPreviewText(REGEXP_PREVIEW_TEXT);
 
+  replaceMDBinded(REGEXP_HTML_COMMENTS, empty);
+
   replaceMDBinded(REGEXP_STRONG, strong);
+
   replaceMDBinded(REGEXP_EM, italic);
 
   replaceMDBinded(REGEXP_HEADER, header);
+
+
   replaceMDBinded(REGEXP_IMAGE, image);
   replaceMDBinded(REGEXP_LINK, link);
 
@@ -92,8 +107,14 @@ function parse(source) {
   replaceMDBinded(REGEXP_BR, br);
   replaceMDBinded(REGEXP_SPONSORSHIP, sponsorship);
   replaceMDBinded(REGEXP_MEM, mem);
-
+  //console.log( state )
   return state;
 }
 
-module.exports = { parse };
+function parseFullTHing(params){
+  const { source } = params;
+
+  return parse(source);
+}
+
+module.exports = { parse, parseFullTHing };

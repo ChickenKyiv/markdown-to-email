@@ -1,5 +1,7 @@
-const config = require('../config');
+// import { mailingAddress } from '../config';
+import { config } from '../config';
 
-module.exports = `<strong>Our mailing address is:</strong>
+export const address =
+`<strong>Our mailing address is:</strong>
 <br>
 ${config.mailingAddress}`;
